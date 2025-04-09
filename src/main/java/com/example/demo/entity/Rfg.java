@@ -14,7 +14,7 @@ import lombok.Data;
 @Entity
 @Table(name = "rfg")
 @Data
-public class Dispute {
+public class Rfg {
 
     @Id
     @GeneratedValue

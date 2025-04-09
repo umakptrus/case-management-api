@@ -1,35 +1,39 @@
 package com.example.demo.controller;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.CaseRequestDTO;
-import com.example.demo.service.DisputeService;
+import com.example.demo.dto.RfgDto;
+import com.example.demo.service.DisputeECPService;
 
 import lombok.RequiredArgsConstructor;
 
+
+
 @RestController
-@RequestMapping("/api/cases")
+@RequestMapping("/ecp-case")
 @RequiredArgsConstructor
 public class DisputeController {
 
-    private final DisputeService service;
+	@Autowired
+    private DisputeECPService disputeECPService;
 
-    @PostMapping("/CreateCase")
-    public ResponseEntity<?> createCase(@RequestBody CaseRequestDTO request) {
-        try {
-            // Check for duplicate case only if returnId is provided
-            if (request.getReturnId() != null && service.isDuplicate(request.getReturnId())) {
-                return ResponseEntity.badRequest().body("Case with return_id already exists.");
-            }
-
-            // Create the case
-            return ResponseEntity.ok(service.createCase(request));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Unexpected error: " + e.getMessage());
+    @PostMapping("/create")
+    public String createEcpCase(@RequestBody RfgDto request) {
+        String id = disputeECPService.createEcpCase(request);
+        if ("Case already exists".equalsIgnoreCase(id)) {
+            return "ECP Case already exists: " + request.getReturnId();
         }
+        return "ECP case created successfully with Id: " + id;
     }
+
+    @PostMapping("/update")
+    public String updateEcpCase() {
+        // TODO: Add update logic
+        return "ECP case updated successfully";
+    }
+
 }

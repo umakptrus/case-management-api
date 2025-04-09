@@ -1,10 +1,11 @@
 package com.example.demo.dto;
 
-import lombok.Data;
 import java.time.LocalDateTime;
 
+import lombok.Data;
+
 @Data
-public class CaseRequestDTO {
+public class RfgDto {
 	private String returnId;
 	private String paymentRequestId;
 	private String captureId;
